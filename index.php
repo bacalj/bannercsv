@@ -23,6 +23,8 @@
  */
 
 require_once(dirname(__FILE__) . '/../../config.php');
+require_once($CFG->libdir . '/csvlib.class.php');
+global $DB;
 
 //collect key values
 $id = required_param('id', PARAM_INT);
@@ -37,12 +39,36 @@ require_login($course);
 $PAGE->set_url('/report/bannercsv/index.php', array('id' => $id));
 $returnurl = new moodle_url('/course/view.php', array('id' => $id));
 
-// Check permissions (borrowing from roster - TODO: make your own)
+// Check permissions (borrowing from roster)
 require_capability('report/roster:view', $coursecontext);
 
 //page setup
 $PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
 $PAGE->set_heading($course->fullname);
+
+/* our end goal is:
+
+  Term Code, CRN, Student ID, Course, Final Grade
+  201601, 14705, 990591314, Engineering, A-
+  201601, 14705, 990591675, Engineering, B+
+  etc
+
+*/
+
+//get the courses termcode and crn by parsing the courseID
+///Get all records where foo = bar, but only return the fields jon,doe
+//$id_arr = $DB->get_records('course', array('id' => $id),null,'idnumber');
+//$id_str = $id_arr[0];
+///The previous example would cause data issues unless the 'foo' field happens to have unique values.
+
+//lets get our idnumber from the datbase
+
+$params = array('theid' => $id);
+$sql = "SELECT idnumber FROM {course} WHERE id = :theid";
+$idarr = $DB->get_records_sql($sql, $params);
+$idnumber = key($idarr);
+
+
 
 //Render
 echo $OUTPUT->header();
@@ -51,11 +77,21 @@ echo $OUTPUT->header();
 echo '<pre>';
   print_r('<b>Course ID:</b><br>');
   var_dump($id, $course->id);
+  print_r('<b>idumber:</b><br>');
+  print_r($idnumber);
   print_r("<br>");
   print_r("<b>Users:</b><br>");
   foreach ($userlist as $user) {
     var_dump($user->email);
   }
 echo '</pre>';
+
+//use Moodle api for getting a CSV and downloading it
+$csvexport = new csv_export_writer();
+//$csvexport->set_filename($filename);
+//$csvexport->add_data($fields);
+print_r("<pre>");
+var_dump($csvexport);
+print_r("</pre>");
 
 echo $OUTPUT->footer();
