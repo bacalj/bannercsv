@@ -40,8 +40,12 @@ $returnurl = new moodle_url('/course/view.php', array('id' => $id));
 // Check permissions (borrowing from roster - TODO: make your own)
 require_capability('report/roster:view', $coursecontext);
 
+//page setup
+$PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
+$PAGE->set_heading($course->fullname);
 
-
+//Render
+echo $OUTPUT->header();
 
 //le debugging
 echo '<pre>';
@@ -53,3 +57,5 @@ echo '<pre>';
     var_dump($user->email);
   }
 echo '</pre>';
+
+echo $OUTPUT->footer();
