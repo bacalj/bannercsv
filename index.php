@@ -62,6 +62,7 @@ $termcode = $idnumber_elements[1];
 //get the student id for each Student and construct a record for each
 $students_list = array();
 foreach ($userlist as $person) {
+
   //each row in csv is going to be a record array
   $student_record = array();
 
@@ -87,34 +88,13 @@ foreach ($userlist as $person) {
 //Render
 echo $OUTPUT->header();
 
-//le debugging
 echo '<pre>';
-  var_dump($students_list);
-
-  // print_r('<b>"grading info"</b><br>');
-  // print_r($grading_info);
-  // print_r('<br><br>');
-  //
-  // print_r('<b>Course ID:</b><br>');
-  // print_r($id);
-  // print_r('<br><br>');
-  //
-  // print_r('<b>idumber:</b><br>');
-  // print_r($idnumber);
-  // print_r('<br><br>');
-  //
-  // print_r('<b>crn:</b><br>');
-  // print_r($crn);
-  // print_r('<br><br>');
-  //
-  // print_r('<b>termcode:</b><br>');
-  // print_r($termcode);
-  // print_r('<br><br>');
-  //
-  // print_r("<b>students list:</b><br>");
-  // print_r($students_list);
-  // print_r('<br><br>');
-
+foreach ($students_list as $record) {
+  foreach ($record as $info){
+    echo $info . ',';
+  }
+  echo '<br>';
+}
 echo '</pre>';
 
 //use Moodle api for getting a CSV and downloading it
