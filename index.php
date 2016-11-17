@@ -24,6 +24,10 @@
 
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
+require_once($CFG->libdir . '/completionlib.php');
+require_once($CFG->dirroot . '/grade/querylib.php');
+require_once($CFG->libdir . '/gradelib.php');
+
 global $DB;
 
 //collect key values
@@ -55,18 +59,34 @@ $PAGE->set_heading($course->fullname);
 
 */
 
-//get the courses termcode and crn by parsing the courseID
-///Get all records where foo = bar, but only return the fields jon,doe
-//$id_arr = $DB->get_records('course', array('id' => $id),null,'idnumber');
-//$id_str = $id_arr[0];
-///The previous example would cause data issues unless the 'foo' field happens to have unique values.
-
-//lets get our idnumber from the datbase
-
+//get idnumber from the datbase
 $params = array('theid' => $id);
 $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
-$idarr = $DB->get_records_sql($sql, $params);
-$idnumber = key($idarr);
+$idnumber = key($DB->get_records_sql($sql, $params));
+
+//extract term code and crn from idnumber
+$idnumber_elements = explode(".", $idnumber);
+$crn = $idnumber_elements[0];
+$termcode = $idnumber_elements[1];
+
+//get the student id for each Student and construct a record for each
+$students_list = array();
+foreach ($userlist as $person) {
+  $student_record = array();
+
+  array_push($student_record, $termcode);
+  array_push($student_record, $crn);
+  array_push($student_record, $person->idnumber);
+  array_push($student_record, $course->shortname);
+
+  $final_grade = "get final grade";
+  // YOU JUST NEED TO INCLUDE THE QUERYLIB then this might work
+  $final_grade = grade_get_course_grade($course->id, $person->id);
+
+  array_push($student_record, $final_grade);
+
+  array_push($students_list, $student_record);
+}
 
 
 
@@ -75,15 +95,31 @@ echo $OUTPUT->header();
 
 //le debugging
 echo '<pre>';
+
+  print_r('<b>"grading info"</b><br>');
+  print_r($grading_info);
+  print_r('<br><br>');
+
   print_r('<b>Course ID:</b><br>');
-  var_dump($id, $course->id);
+  print_r($id);
+  print_r('<br><br>');
+
   print_r('<b>idumber:</b><br>');
   print_r($idnumber);
-  print_r("<br>");
-  print_r("<b>Users:</b><br>");
-  foreach ($userlist as $user) {
-    var_dump($user->email);
-  }
+  print_r('<br><br>');
+
+  print_r('<b>crn:</b><br>');
+  print_r($crn);
+  print_r('<br><br>');
+
+  print_r('<b>termcode:</b><br>');
+  print_r($termcode);
+  print_r('<br><br>');
+
+  print_r("<b>students list:</b><br>");
+  print_r($students_list);
+  print_r('<br><br>');
+
 echo '</pre>';
 
 //use Moodle api for getting a CSV and downloading it
