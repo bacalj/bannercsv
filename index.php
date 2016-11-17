@@ -22,12 +22,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+//dependencies
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
-require_once($CFG->libdir . '/completionlib.php');
 require_once($CFG->dirroot . '/grade/querylib.php');
 require_once($CFG->libdir . '/gradelib.php');
-
 global $DB;
 
 //collect key values
@@ -46,20 +45,11 @@ $returnurl = new moodle_url('/course/view.php', array('id' => $id));
 // Check permissions (borrowing from roster)
 require_capability('report/roster:view', $coursecontext);
 
-//page setup
+//set up page
 $PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
 $PAGE->set_heading($course->fullname);
 
-/* our end goal is:
-
-  Term Code, CRN, Student ID, Course, Final Grade
-  201601, 14705, 990591314, Engineering, A-
-  201601, 14705, 990591675, Engineering, B+
-  etc
-
-*/
-
-//get idnumber from the datbase
+// get course idnumber - which is a concat of Banner CRN + Term Code
 $params = array('theid' => $id);
 $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
 $idnumber = key($DB->get_records_sql($sql, $params));
@@ -72,19 +62,23 @@ $termcode = $idnumber_elements[1];
 //get the student id for each Student and construct a record for each
 $students_list = array();
 foreach ($userlist as $person) {
+  //each row in csv is going to be a record array
   $student_record = array();
 
+  //get the students final grade
+  $studentkey = $person->id;
+  $final_grade_obj = grade_get_course_grades($course->id, $studentkey);
+  $final_grade_num = $final_grade_obj->grades[$studentkey]->grade;
+  $final_grade_ltr = $final_grade_obj->grades[$studentkey]->str_grade;
+
+  //build up the record
   array_push($student_record, $termcode);
   array_push($student_record, $crn);
   array_push($student_record, $person->idnumber);
   array_push($student_record, $course->shortname);
+  array_push($student_record, $final_grade_ltr);
 
-  $final_grade = "get final grade";
-  // YOU JUST NEED TO INCLUDE THE QUERYLIB then this might work
-  $final_grade = grade_get_course_grades($course->id, $person->id);
-
-  array_push($student_record, $final_grade);
-
+  //put the record in the records list
   array_push($students_list, $student_record);
 }
 
@@ -95,30 +89,31 @@ echo $OUTPUT->header();
 
 //le debugging
 echo '<pre>';
+  var_dump($students_list);
 
-  print_r('<b>"grading info"</b><br>');
-  print_r($grading_info);
-  print_r('<br><br>');
-
-  print_r('<b>Course ID:</b><br>');
-  print_r($id);
-  print_r('<br><br>');
-
-  print_r('<b>idumber:</b><br>');
-  print_r($idnumber);
-  print_r('<br><br>');
-
-  print_r('<b>crn:</b><br>');
-  print_r($crn);
-  print_r('<br><br>');
-
-  print_r('<b>termcode:</b><br>');
-  print_r($termcode);
-  print_r('<br><br>');
-
-  print_r("<b>students list:</b><br>");
-  print_r($students_list);
-  print_r('<br><br>');
+  // print_r('<b>"grading info"</b><br>');
+  // print_r($grading_info);
+  // print_r('<br><br>');
+  //
+  // print_r('<b>Course ID:</b><br>');
+  // print_r($id);
+  // print_r('<br><br>');
+  //
+  // print_r('<b>idumber:</b><br>');
+  // print_r($idnumber);
+  // print_r('<br><br>');
+  //
+  // print_r('<b>crn:</b><br>');
+  // print_r($crn);
+  // print_r('<br><br>');
+  //
+  // print_r('<b>termcode:</b><br>');
+  // print_r($termcode);
+  // print_r('<br><br>');
+  //
+  // print_r("<b>students list:</b><br>");
+  // print_r($students_list);
+  // print_r('<br><br>');
 
 echo '</pre>';
 
