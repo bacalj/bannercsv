@@ -81,7 +81,7 @@ foreach ($userlist as $person) {
 
   $final_grade = "get final grade";
   // YOU JUST NEED TO INCLUDE THE QUERYLIB then this might work
-  $final_grade = grade_get_course_grade($course->id, $person->id);
+  $final_grade = grade_get_course_grades($course->id, $person->id);
 
   array_push($student_record, $final_grade);
 
