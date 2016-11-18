@@ -93,15 +93,11 @@ foreach ($userlist as $person) {
 //Render
 echo $OUTPUT->header();
 
-echo '<pre>';
-  var_dump($magicstring);
-echo '</pre>';
-
 $open_csv_link = '<a href="';
 $streamer = 'data:application/octet-stream,';
 $magicstring = implode('', $students_list);
-$close_csv_link = '" download="final_grade_export.csv">Download CSV of Final Grades</a>';
+$file_name = 'final_grades_' . $course->shortname . '_' . date("Y_m_d_His") . '.csv';
+$close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a>';
 echo $open_csv_link . $streamer . $magicstring . $close_csv_link;
-
 
 echo $OUTPUT->footer();
