@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Display a bannercsv of students
+ * Download a CSV of final grades that Banner will accept
  *
  * @package   report_bannercsv
  * @copyright 2016 Joe Bacal, Smith College ETS
@@ -89,15 +89,14 @@ foreach ($userlist as $person) {
   array_push($students_list, $record_string . '%0A');
 }
 
+//assemble our link
+$open_csv_link = '<a href="';
+$streamer = 'data:application/octet-stream,';
+$records_as_string = implode('', $students_list);
+$file_name = 'final_grades_' . $course->shortname . '_' . date("Y_m_d_His") . '.csv';
+$close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a>';
 
 //Render
 echo $OUTPUT->header();
-
-$open_csv_link = '<a href="';
-$streamer = 'data:application/octet-stream,';
-$magicstring = implode('', $students_list);
-$file_name = 'final_grades_' . $course->shortname . '_' . date("Y_m_d_His") . '.csv';
-$close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a>';
-echo $open_csv_link . $streamer . $magicstring . $close_csv_link;
-
+echo $open_csv_link . $streamer . $records_as_string . $close_csv_link;
 echo $OUTPUT->footer();
