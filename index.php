@@ -49,12 +49,12 @@ require_capability('report/roster:view', $coursecontext);
 $PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
 $PAGE->set_heading($course->fullname);
 
-// get course idnumber - which is a concat of Banner CRN + Term Code
+// get Moodle-only course idnumber - which is a concat of Banner CRN + Term Code
 $params = array('theid' => $id);
 $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
 $idnumber = key($DB->get_records_sql($sql, $params));
 
-//extract term code and crn from idnumber
+//extract Banner term code and crn from idnumber
 $idnumber_elements = explode(".", $idnumber);
 $crn = $idnumber_elements[0];
 $termcode = $idnumber_elements[1];
