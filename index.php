@@ -60,7 +60,8 @@ $crn = $idnumber_elements[0];
 $termcode = $idnumber_elements[1];
 
 //hardcode the field titles and put it on top of our future list
-$students_list = array('Term Code,CRN,Student ID,Course,Final Grade');
+//crazy chars are commas and newlines for future life as a csv
+$students_list = array('Term%20Code%2CCRN%2CStudent%20ID%2CCourse%2CFinal%20Grade%0A');
 
 //get the student id for each Student and construct a record for each
 foreach ($userlist as $person) {
@@ -82,28 +83,25 @@ foreach ($userlist as $person) {
   array_push($student_record, $final_grade_ltr);
 
   //compact each record into a comma-separated string
-  $record_string = implode(',', $student_record);
+  $record_string = implode('%2C', $student_record);
 
   //put the record in the records list
-  array_push($students_list, $record_string);
+  array_push($students_list, $record_string . '%0A');
 }
 
-//hardcode Banner field titles
-$fields = 'Term Code,CRN,Student ID,Course,Final Grade';
 
 //Render
 echo $OUTPUT->header();
 
 echo '<pre>';
-  var_dump($students_list);
+  var_dump($magicstring);
 echo '</pre>';
-
 
 $open_csv_link = '<a href="';
 $streamer = 'data:application/octet-stream,';
-$magic_string = 'field1%2Cfield2%0Afoo%2Cbar%0Agoo%2Cgai%0A';
-$close_csv_link = '">Download CSV</a>';
+$magicstring = implode('', $students_list);
+$close_csv_link = '" download="final_grade_export.csv">Download CSV of Final Grades</a>';
+echo $open_csv_link . $streamer . $magicstring . $close_csv_link;
 
-echo $open_csv_link . $streamer . $magic_string . $close_csv_link;
 
 echo $OUTPUT->footer();
