@@ -59,8 +59,10 @@ $idnumber_elements = explode(".", $idnumber);
 $crn = $idnumber_elements[0];
 $termcode = $idnumber_elements[1];
 
+//hardcode the field titles and put it on top of our future list
+$students_list = array('Term Code,CRN,Student ID,Course,Final Grade');
+
 //get the student id for each Student and construct a record for each
-$students_list = array();
 foreach ($userlist as $person) {
 
   //each row in csv is going to be a record array
@@ -79,30 +81,29 @@ foreach ($userlist as $person) {
   array_push($student_record, $course->shortname);
   array_push($student_record, $final_grade_ltr);
 
+  //compact each record into a comma-separated string
+  $record_string = implode(',', $student_record);
+
   //put the record in the records list
-  array_push($students_list, $student_record);
+  array_push($students_list, $record_string);
 }
 
-
+//hardcode Banner field titles
+$fields = 'Term Code,CRN,Student ID,Course,Final Grade';
 
 //Render
 echo $OUTPUT->header();
 
 echo '<pre>';
-foreach ($students_list as $record) {
-  foreach ($record as $info){
-    echo $info . ',';
-  }
-  echo '<br>';
-}
+  var_dump($students_list);
 echo '</pre>';
 
-//use Moodle api for getting a CSV and downloading it
-$csvexport = new csv_export_writer();
-//$csvexport->set_filename($filename);
-//$csvexport->add_data($fields);
-print_r("<pre>");
-var_dump($csvexport);
-print_r("</pre>");
+
+$open_csv_link = '<a href="';
+$streamer = 'data:application/octet-stream,';
+$magic_string = 'field1%2Cfield2%0Afoo%2Cbar%0Agoo%2Cgai%0A';
+$close_csv_link = '">Download CSV</a>';
+
+echo $open_csv_link . $streamer . $magic_string . $close_csv_link;
 
 echo $OUTPUT->footer();
