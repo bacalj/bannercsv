@@ -26,5 +26,6 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['pluginname'] = 'Banner CSV';
 $string['bannercsv'] = 'Banner CSV';
+$string['flavor1'] = 'Strawberry';
 $string['bannercsv:view'] = 'View bannercsv course report';
 $string['webmode'] = 'Web report';
