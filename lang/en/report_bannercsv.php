@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['pluginname'] = 'Banner CSV'; //doesn't seem to work
-$string['bannercsv'] = 'Banner CSV'; //doesn't seem to work
+$string['pluginname'] = 'Banner CSV';
+$string['bannercsv'] = 'Banner CSV';
 $string['bannercsv:view'] = 'View bannercsv course report';
 $string['webmode'] = 'Web report';
