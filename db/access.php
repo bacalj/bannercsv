@@ -15,17 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions for the bannercsv report.
+ * report_bannercsv capability definitions.
  *
  * @package   report_bannercsv
- * @copyright 2016 Joe Bacal, Smith College
+ * @copyright 2017 Lafayette College ITS
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-//we need this function as moodle will construct a call to it when we build results page
-function report_bannercsv_extend_navigation_course($navigation, $course, $context) {
-  if (has_capability('report/bannercsv:view', $context)) {
-    $url = new moodle_url('/report/bannercsv/index.php', array('id'=>$course->id));
-    $navigation->add(get_string('pluginname', 'report_bannercsv'), $url, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
-  }
-}
+defined('MOODLE_INTERNAL') || die;
+
+$capabilities = array(
+    'report/bannercsv:view' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/site:viewreports',
+    )
+);

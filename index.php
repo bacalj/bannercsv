@@ -42,8 +42,8 @@ require_login($course);
 $PAGE->set_url('/report/bannercsv/index.php', array('id' => $id));
 $returnurl = new moodle_url('/course/view.php', array('id' => $id));
 
-// Check permissions (borrowing from roster)
-require_capability('report/roster:view', $coursecontext);
+// Check permissions.
+require_capability('report/bannercsv:view', $coursecontext);
 
 //set up page
 $PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
