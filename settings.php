@@ -12,8 +12,8 @@ $settings->add(
 		get_string('course_id_pattern_desc', 'report_bannercsv'), //description
 		'default foo not sure what this param needs', // string or int default settings
 		array(
-			'dot' => '[CRN].[TERMCODE]',
-			'hyphen' => '[CRN]-[TERMCODE]'
+			'.' => '[CRN].[TERMCODE]',
+			'-' => '[CRN]-[TERMCODE]'
 		)
 	)
 );

@@ -57,12 +57,17 @@ $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
 $idnumber = key($DB->get_records_sql($sql, $params));
 
 //extract Banner term code and crn from idnumber
-$idnumber_elements = explode(".", $idnumber);
+
+$localconfig = get_config('report_bannercsv');
+$dot_or_hyphen = $localconfig->course_id_pattern;
+
+$idnumber_elements = explode($dot_or_hyphen, $idnumber);
 $crn = $idnumber_elements[0];
-$termcode = $idnumber_elements[1];
+$termcode = $idnumber_elements[1]; //throws error when no second index
 
 //hardcode the field titles and put it on top of our future list
 //crazy chars are commas and newlines for future life as a csv
+
 $students_list = array('Term%20Code%2CCRN%2CStudent%20ID%2CCourse%2CFinal%20Grade%0A');
 
 //get the student id for each Student and construct a record for each
@@ -100,10 +105,9 @@ $close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a
 
 //Render
 echo $OUTPUT->header();
-echo '<pre>';
+//echo '<pre>';
 //global $CFG;
-$localconfig = get_config('report_bannercsv');
-var_dump($localconfig->course_id_pattern);
-echo '</pre>';
+
+//echo '</pre>';
 echo $open_csv_link . $streamer . $records_as_string . $close_csv_link;
 echo $OUTPUT->footer();
