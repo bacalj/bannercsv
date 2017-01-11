@@ -50,6 +50,7 @@ require_capability('report/bannercsv:view', $coursecontext);
 $PAGE->set_title($course->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
 $PAGE->set_heading($course->fullname);
 
+
 // get Moodle-only course idnumber - which is a concat of Banner CRN + Term Code
 $params = array('theid' => $id);
 $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
@@ -100,9 +101,9 @@ $close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a
 //Render
 echo $OUTPUT->header();
 echo '<pre>';
-global $CFG;
-$bob = get_config('report_bannercsv', 'torf');
-var_dump($bob);
+//global $CFG;
+$localconfig = get_config('report_bannercsv');
+var_dump($localconfig->course_id_pattern);
 echo '</pre>';
 echo $open_csv_link . $streamer . $records_as_string . $close_csv_link;
 echo $OUTPUT->footer();

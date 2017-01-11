@@ -26,6 +26,10 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['pluginname'] = 'Banner CSV';
 $string['bannercsv'] = 'Banner CSV';
-$string['flavor1'] = 'Strawberry';
+
+$string['course_id_pattern'] = 'Course ID pattern';
+$string['course_id_pattern_desc'] = 'How your Moodle Course ID appears';
+
 $string['bannercsv:view'] = 'View bannercsv course report';
+
 $string['webmode'] = 'Web report';
