@@ -27,6 +27,7 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 require_once($CFG->dirroot . '/grade/querylib.php');
 require_once($CFG->libdir . '/gradelib.php');
+
 global $DB;
 
 //collect key values
@@ -98,5 +99,10 @@ $close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a
 
 //Render
 echo $OUTPUT->header();
+echo '<pre>';
+global $CFG;
+$bob = get_config('report_bannercsv', 'torf');
+var_dump($bob);
+echo '</pre>';
 echo $open_csv_link . $streamer . $records_as_string . $close_csv_link;
 echo $OUTPUT->footer();
