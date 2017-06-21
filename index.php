@@ -29,8 +29,6 @@ require_once($CFG->dirroot . '/grade/querylib.php');
 require_once($CFG->libdir . '/gradelib.php');
 include('bannercsv.php');
 
-
-
 global $DB;
 
 //collect key values
@@ -60,7 +58,6 @@ $sql = "SELECT idnumber FROM {course} WHERE id = :theid";
 $idnumber = key($DB->get_records_sql($sql, $params));
 
 //extract Banner term code and crn from idnumber
-
 $localconfig = get_config('report_bannercsv');
 $dot_or_hyphen = $localconfig->course_id_pattern;
 
