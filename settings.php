@@ -1,6 +1,6 @@
 <?php
 
-$ADMIN->add('reports', new admin_externalpage('reportbannercsv', get_string('bannercsv', 'report_bannercsv'), "$CFG->wwwroot/report/bannercsv/index.php"));
+//$ADMIN->add('reports', new admin_externalpage('reportbannercsv', get_string('bannercsv', 'report_bannercsv'), "$CFG->wwwroot/report/bannercsv/index.php"));
 
 //BTW: args for settings maker thing are: ($name, $visiblename, $description, $defaultsetting, array of options in dropdown)
 //U can use, e.g.: admin_setting_configmultiselect, admin_setting_configselect, admin_setting_configtext
