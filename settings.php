@@ -10,7 +10,7 @@ $settings->add(
 		'report_bannercsv/course_id_pattern', //name
 		get_string('course_id_pattern', 'report_bannercsv'), //visible name
 		get_string('course_id_pattern_desc', 'report_bannercsv'), //description
-		'default foo not sure what this param needs', // string or int default settings
+		'default', // string or int default settings
 		array(
 			'.' => '[CRN].[TERMCODE]',
 			'-' => '[CRN]-[TERMCODE]'
