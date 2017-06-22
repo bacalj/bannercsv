@@ -43,10 +43,6 @@ class BannerCsv {
 	}
 
 	function display_record_preview(){
-		echo '<hr>';
-		echo '<h2>Verify grade data to be exported to Banner-ready CSV</h2>';
-		echo '<p>The table below is for data verification only. The actual csv feilds will be: <code>Term Code,CRN,Student ID,Course,Final Grade</code></p>';
-		echo '<hr>';
 		echo '<tr><th>First Name</th><th>Last Name</th><th>Course Final Grade</th></tr>';
 		foreach ($this->userlist as $rec) {
 			echo '<tr>';
@@ -56,7 +52,7 @@ class BannerCsv {
 				$final_grade_obj = grade_get_course_grades($this->courseobj->id, $studentkey);
 				$final_grade_num = $final_grade_obj->grades[$studentkey]->grade;
 				$final_grade_ltr = $final_grade_obj->grades[$studentkey]->str_grade;
-				echo '<td>' . $final_grade_num . '</td>';
+				echo '<td>' . substr($final_grade_num, 0, 5) . '</td>';
 			echo '</tr>';
 		}
 
@@ -91,7 +87,7 @@ class BannerCsv {
 	}
 
 	function render_csv_download_link(){
-		$open_csv_link = '<a href="';
+		$open_csv_link = '<hr><a class="btn" href="';
 		$streamer = 'data:application/octet-stream,';
 		$records_as_string = implode('', $this->students_list);
 		$file_name = 'final_grades_' . $this->courseobj->shortname . '_' . date("Y_m_d_His") . '.csv';

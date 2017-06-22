@@ -20,9 +20,13 @@ echo $OUTPUT->header();
 //echo '<pre>';
   //$bcsv->display_record_preview();
 $bcsv->build_student_records_stream_content();
-echo '<table style="width:60%;">';
-  $bcsv->display_record_preview();
+echo '<hr>';
+echo '<h2>Verify grade data</h2>';
+echo '<p>The table below is for data verification only. The actual csv feilds will be: <code>Term Code,CRN,Student ID,Course,Final Grade</code></p>';
+echo '<table style="width:50%;">';
+$bcsv->display_record_preview();
 echo '</table>';
+
 $bcsv->render_csv_download_link();
   //$bcsv->collect_student_id_location();
 //echo '</pre>';
