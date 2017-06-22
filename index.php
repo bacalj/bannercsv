@@ -20,9 +20,10 @@ echo $OUTPUT->header();
 //echo '<pre>';
   //$bcsv->display_record_preview();
 $bcsv->build_student_records_stream_content();
-$bcsv->display_record_preview();
+echo '<table style="width:60%;">';
+  $bcsv->display_record_preview();
+echo '</table>';
 $bcsv->render_csv_download_link();
-
   //$bcsv->collect_student_id_location();
 //echo '</pre>';
 echo $OUTPUT->footer();

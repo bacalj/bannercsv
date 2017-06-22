@@ -43,11 +43,23 @@ class BannerCsv {
 	}
 
 	function display_record_preview(){
-		echo '<table>';
+		echo '<hr>';
+		echo '<h2>Verify grade data to be exported to Banner-ready CSV</h2>';
+		echo '<p>The table below is for data verification only. The actual csv feilds will be: <code>Term Code,CRN,Student ID,Course,Final Grade</code></p>';
+		echo '<hr>';
+		echo '<tr><th>First Name</th><th>Last Name</th><th>Course Final Grade</th></tr>';
+		foreach ($this->userlist as $rec) {
 			echo '<tr>';
-				echo '<th>Term Code</th><th>StudentID</th><th>Course Final Grade</th></tr>';
+				echo '<td>' . $rec->firstname . '</td>';
+				echo '<td>' . $rec->lastname . '</td>';
+				$studentkey = $rec->id;
+				$final_grade_obj = grade_get_course_grades($this->courseobj->id, $studentkey);
+				$final_grade_num = $final_grade_obj->grades[$studentkey]->grade;
+				$final_grade_ltr = $final_grade_obj->grades[$studentkey]->str_grade;
+				echo '<td>' . $final_grade_num . '</td>';
 			echo '</tr>';
-		echo '</table>';
+		}
+
 	}
 
 	function build_student_records_stream_content(){
