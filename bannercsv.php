@@ -11,6 +11,8 @@ class BannerCsv {
 		$sql = "SELECT idnumber FROM {course} WHERE id = :theid";
 		$this->crnterm = key($DB->get_records_sql($sql, $params));
 		$this->errorText = 'No errors detected.';
+		$this->custom_student_id_field = get_config('report_bannercsv')->custom_student_id_field;
+		var_dump($this->custom_student_id_field);
 	}
 
 	function setup_page_and_access(){
@@ -21,10 +23,6 @@ class BannerCsv {
 		require_capability('report/bannercsv:view', $this->coursecontext);
 		$PAGE->set_title($this->courseobj->shortname .': '. get_string('bannercsv' , 'report_bannercsv'));
 		$PAGE->set_heading($this->courseobj->fullname);
-	}
-
-	function collect_student_id_location(){
-		//get name of student id source field from settings
 	}
 
 	function extract_term_and_crn(){
@@ -58,11 +56,6 @@ class BannerCsv {
 
 	}
 
-	function use_custom_student_id(){
-		return false;
-		//if config setting is to get from a custom field
-		   //get the name of the custom field
-	}
 
 	function build_student_records_stream_content(){
 		$this->students_list = array('Term%20Code%2CCRN%2CStudent%20ID%2CCourse%2CFinal%20Grade%0A');
@@ -74,7 +67,6 @@ class BannerCsv {
 			//get the students final grade
 			$studentkey = $person->id;
 
-
 			$final_grade_obj = grade_get_course_grades($this->courseobj->id, $studentkey);
 			$final_grade_num = $final_grade_obj->grades[$studentkey]->grade;
 			$final_grade_ltr = $final_grade_obj->grades[$studentkey]->str_grade;
@@ -83,11 +75,14 @@ class BannerCsv {
 			array_push($student_record, $this->termcode);
 			array_push($student_record, $this->crn);
 
-			if ( $this->use_custom_student_id() === false ){
+			if ( $this->custom_student_id_field == '' ){
 				array_push($student_record, $person->idnumber);
 			} else {
-				$custom_id = '12345699';
-				array_push($student_record, $custom_id);
+				profile_load_data($person);
+				$customid = $this->custom_student_id_field;
+				if (!empty($person->$this->custom_student_id_field)) {
+				 array_push($student_record, $person->$customid);
+				}
 			}
 
 			array_push($student_record, $this->courseobj->shortname);

@@ -28,7 +28,10 @@ $string['pluginname'] = 'Banner CSV';
 $string['bannercsv'] = 'Banner CSV';
 
 $string['course_id_pattern'] = 'Course ID pattern';
+$string['bcsv_custom_student_id_field'] = 'Custom Student ID Field';
+
 $string['course_id_pattern_desc'] = 'How your Moodle Course ID appears';
+$string['bcsv_custom_student_id_field_desc'] = 'The name of your custom Student ID Field if you have one';
 
 $string['bannercsv:view'] = 'View bannercsv course report';
 

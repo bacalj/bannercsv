@@ -17,3 +17,11 @@ $settings->add(
 		)
 	)
 );
+
+$settings->add(
+	new admin_setting_configtext(
+		'report_bannercsv/custom_student_id_field', //name
+		get_string('bcsv_custom_student_id_field', 'report_bannercsv'), //visible name
+		get_string('bcsv_custom_student_id_field_desc', 'report_bannercsv'),
+		'empty')
+);
