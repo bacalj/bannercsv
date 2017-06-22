@@ -12,7 +12,6 @@ class BannerCsv {
 		$this->crnterm = key($DB->get_records_sql($sql, $params));
 		$this->errorText = 'No errors detected.';
 		$this->custom_student_id_field = get_config('report_bannercsv')->custom_student_id_field;
-		var_dump($this->custom_student_id_field);
 	}
 
 	function setup_page_and_access(){
@@ -79,14 +78,13 @@ class BannerCsv {
 				array_push($student_record, $person->idnumber);
 			} else {
 				profile_load_data($person);
-				$customid = $this->custom_student_id_field;
-				if (!empty($person->$this->custom_student_id_field)) {
-				 array_push($student_record, $person->$customid);
-				}
+				$myStr = 'profile_field_' . $this->custom_student_id_field;
+				array_push($student_record, strip_tags($person->{$myStr}['text']));
 			}
 
 			array_push($student_record, $this->courseobj->shortname);
 			array_push($student_record, $final_grade_ltr);
+			//var_dump($student_record);
 			//compact each record into a comma-separated string
 			$record_string = implode('%2C', $student_record);
 			//put the record in the records list
