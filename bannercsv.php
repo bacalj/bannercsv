@@ -43,8 +43,11 @@ class BannerCsv {
 	}
 
 	function display_record_preview(){
-		var_dump($this->crn);
-		var_dump($this->termcode);
+		echo '<table>';
+			echo '<tr>';
+				echo '<th>Term Code</th><th>StudentID</th><th>Course Final Grade</th></tr>';
+			echo '</tr>';
+		echo '</table>';
 	}
 
 	function build_student_records_stream_content(){
@@ -83,5 +86,4 @@ class BannerCsv {
 		$close_csv_link = '" download="'. $file_name .'">Download CSV of Final Grades</a>';
 		echo $open_csv_link . $streamer . $records_as_string . $close_csv_link;
 	}
-
 }
