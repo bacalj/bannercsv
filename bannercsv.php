@@ -58,6 +58,12 @@ class BannerCsv {
 
 	}
 
+	function use_custom_student_id(){
+		return false;
+		//if config setting is to get from a custom field
+		   //get the name of the custom field
+	}
+
 	function build_student_records_stream_content(){
 		$this->students_list = array('Term%20Code%2CCRN%2CStudent%20ID%2CCourse%2CFinal%20Grade%0A');
 
@@ -76,7 +82,14 @@ class BannerCsv {
 			//build up the record
 			array_push($student_record, $this->termcode);
 			array_push($student_record, $this->crn);
-			array_push($student_record, $person->idnumber);
+
+			if ( $this->use_custom_student_id() === false ){
+				array_push($student_record, $person->idnumber);
+			} else {
+				$custom_id = '12345699';
+				array_push($student_record, $custom_id);
+			}
+
 			array_push($student_record, $this->courseobj->shortname);
 			array_push($student_record, $final_grade_ltr);
 			//compact each record into a comma-separated string
