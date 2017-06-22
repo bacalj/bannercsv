@@ -5,6 +5,8 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 require_once($CFG->dirroot . '/grade/querylib.php');
 require_once($CFG->libdir . '/gradelib.php');
+require_once($CFG->dirroot.'/user/profile/lib.php');
+
 include('bannercsv.php');
 global $DB;
 
@@ -23,11 +25,15 @@ $bcsv->build_student_records_stream_content();
 echo '<hr>';
 echo '<h2>Verify grade data</h2>';
 echo '<p>The table below is for data verification only. The actual csv feilds will be: <code>Term Code,CRN,Student ID,Course,Final Grade</code></p>';
-echo '<table style="width:50%;">';
-$bcsv->display_record_preview();
-echo '</table>';
 
-$bcsv->render_csv_download_link();
-  //$bcsv->collect_student_id_location();
-//echo '</pre>';
+if ( $bcsv->errorText !== 'No errors detected.' ){
+  echo $bcsv->errorText;
+} else {
+  echo '<table style="width:50%;">';
+  $bcsv->display_record_preview();
+  echo '</table>';
+  $bcsv->render_csv_download_link();
+}
+
+
 echo $OUTPUT->footer();
